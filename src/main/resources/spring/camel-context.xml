@@ -5,9 +5,17 @@
         <property name="brokers" value="{{kafka.brokers}}"/>
     </bean>
     <camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
-        <route id="inventory-route">
+        <route id="schema-route">
             <from id="route-kafka" uri="kafka:schema-changes.inventory"/>
             <log id="route-log1" message=">>> ${body}"/>
+        </route>
+        <route id="customer-route">
+            <from id="route-kafka-customer" uri="kafka:dbserver1.inventory.customers"/>
+            <log id="route-log2" message="Customer Events>>> ${body}"/>
+        </route>
+        <route id="product-route">
+            <from id="route-kafka-customer" uri="kafka:dbserver1.inventory.products"/>
+            <log id="route-log3" message="Product Events>>> ${body}"/>
         </route>
     </camelContext>
 </beans>
